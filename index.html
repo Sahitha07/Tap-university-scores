@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Examinee Data Input</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      padding: 20px;
+      background-color: #b2899e; /* Add background color to the body */
+      color: #050211; /* Set font color for the text */
+      border: 2px solid #ccc; /* Add a border to the body */
+
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #dcc7e0;
+      color: #050000;
+      border: none;
+      cursor: pointer;
+    }
+
+    p#output {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 70px;
+      margin-right: 5px;
+    }
+
+    /* Additional style for the add and delete buttons */
+    .add-btn,
+    .delete-btn {
+      padding: 5px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+    <h1>Examinee Data Input</h1>
+
+    <textarea id="examineeData" rows="5" cols="40" placeholder="Enter examinee marks here"></textarea>
+<br>
+<button id="processData" onclick="processExamineeData()">Process Data</button>
+<p id="output"></p>
+<ul id="outputList"></ul>
+
+<!-- Add Subject functionality -->
+<div>
+  <input type="text" id="subjectName" placeholder="Enter subject name">
+  <input type="number" id="subjectScore" placeholder="Enter subject score">
+  <button id="addSubjectBtn" onclick="addSubject()">Add Subject</button>
+</div>
+<br>
+<br>
+<!-- Delete Subject functionality -->
+<div>
+  <select id="subjectToDelete">
+    <option disabled selected>Select subject to delete</option>
+  </select>
+  <button id="deleteSubjectBtn" onclick="deleteSubject()">Delete Subject</button>
+</div>
+
+<script>
+
+let passersCount = 0;
+const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
+
+  
+
+    function isPassed(totalScores, scienceScores, humanitiesScores, division) {
+      // ... (same code as before)
+      const totalScore = totalScores.reduce((total, score) => total + score, 0);
+      const scienceScore = scienceScores.reduce((total, score) => total + score, 0);
+      const humanitiesScore = humanitiesScores.reduce((total, score) => total + score, 0);
+
+      return totalScore >= 350 && ((division === 'l' && humanitiesScore >= 160) || (division === 's' && scienceScore >= 160));
+    }
+
+    function processExamineeData() {
+      const rawData = document.getElementById('examineeData').value.trim();
+      const examineeData = rawData.split('\n');
+      passersCount = 0; // Reset passersCount before processing new data
+
+      for (const data of examineeData) {
+        const [division, english, math, science, japanese, geography] = data.split(' ');
+        const totalScores = [parseInt(english), parseInt(math), parseInt(science), parseInt(japanese), parseInt(geography)];
+        const scienceScores = [parseInt(math), parseInt(science)];
+        const humanitiesScores = [parseInt(japanese), parseInt(geography)];
+
+        if (isPassed(totalScores, scienceScores, humanitiesScores, division)) {
+          passersCount++;
+        }
+      }
+
+      const outputElement = document.getElementById('output');
+      outputElement.textContent = "Number of Passers: " + passersCount;
+    }
+
+    function addSubject() {
+  const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
+  const subjectScore = parseInt(document.getElementById('subjectScore').value);
+
+  if (subjectName && !isNaN(subjectScore)) {
+    subjects.push(subjectName);
+
+    // Reset input fields
+    document.getElementById('subjectName').value = '';
+    document.getElementById('subjectScore').value = '';
+
+    updateSubjectToDeleteOptions();
+  }
+}
+
+function deleteSubject() {
+  const subjectToDelete = document.getElementById('subjectToDelete').value;
+  const indexToDelete = subjects.indexOf(subjectToDelete);
+
+  if (indexToDelete !== -1) {
+    subjects.splice(indexToDelete, 1);
+    updateSubjectToDeleteOptions();
+  }
+}
+
+function updateSubjectToDeleteOptions() {
+  const subjectToDeleteElement = document.getElementById('subjectToDelete');
+  subjectToDeleteElement.innerHTML = '<option disabled selected>Select subject to delete</option>';
+
+  for (const subject of subjects) {
+    const option = document.createElement('option');
+    option.value = subject;
+    option.textContent = subject;
+    subjectToDeleteElement.appendChild(option);
+  }
+}
+
+updateSubjectToDeleteOptions();
+  </script>
+</body>
+</html>
