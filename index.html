@@ -57,11 +57,18 @@
 <body>
     <h1>Examinee Data Input</h1>
 
-    <textarea id="examineeData" rows="5" cols="40" placeholder="Enter examinee marks here"></textarea>
-<br>
-<button id="processData" onclick="processExamineeData()">Process Data</button>
-<p id="output"></p>
-<ul id="outputList"></ul>
+    <label for="numExaminees">Number of Examinees (N):</label>
+  <input type="number" id="numExaminees" placeholder="Enter number of examinees">
+  <button id="startButton">Start Examination</button>
+
+  <div id="examineeDataContainer">
+    <!-- The examinee data will be added here dynamically -->
+  </div>
+
+  <br>
+  <button id="processData" onclick="processExamineeData()">Process Data</button>
+  <p id="output"></p>
+  <ul id="outputList"></ul>
 
 <!-- Add Subject functionality -->
 <div>
