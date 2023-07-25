@@ -106,21 +106,12 @@
           const scienceScore = this.scienceScore();
           const humanitiesScore = this.humanitiesScore();
 
-      if (totalScore < 350) {
-            return false;
-          }
-
-          if (this.division === 'l' && humanitiesScore >= 160) {
-            return true;
-          }
-
-          if (this.division === 's' && scienceScore >= 160) {
-            return true;
-          }
-
-          return false;
-        }
-      }
+      return (
+      totalScore >= 350 &&
+      ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
+    );
+  }
+}
 
     class Examination {
       constructor() {
