@@ -1,34 +1,38 @@
-// Import the Examinee class from './examinee.js'
-import { Examinee } from './examinee.js';
-
-// Examination class representing the collection of examinees
-export class Examination {
-  constructor() {
-    // Initialize an empty array to store examinee objects
-    this.examinees = [];
-  }
-
-  // Method to add an examinee to the examination
-  addExaminee(examinee) {
-    // Add the examinee object to the array of examinees
-    this.examinees.push(examinee);
-  }
-
-  // Method to count the number of examinees who have passed the exam
-  countPassers() {
-    // Initialize a variable to keep track of the number of passers
-    let passers = 0;
-    
-    // Loop through each examinee in the array of examinees
-    for (const examinee of this.examinees) {
-      // Check if the examinee has passed the exam using the isPassed() method of the Examinee class
-      if (examinee.isPassed()) {
-        // If the examinee has passed, increment the passers count
-        passers++;
-      }
+// Examinee class representing an individual examinee
+export class Examinee {
+    constructor(division, english, math, science, japanese, geographyHistory) {
+        // Initialize properties for each subject score and division
+        this.division = division;
+        this.english = english;
+        this.math = math;
+        this.science = science;
+        this.japanese = japanese;
+        this.geographyHistory = geographyHistory;
     }
-
-    // Return the total number of passers
-    return passers;
-  }
+  
+    // Method to calculate and return the total score of the examinee
+    totalScore() {
+        return this.english + this.math + this.science + this.japanese + this.geographyHistory;
+    }
+  
+    // Method to calculate and return the science score of the examinee
+    scienceScore() {
+        return this.math + this.science;
+    }
+  
+    // Method to calculate and return the humanities score of the examinee
+    humanitiesScore() {
+        return this.japanese + this.geographyHistory;
+    }
+  
+    // Method to check if the examinee has passed the exam based on the total score and division
+    isPassed() {
+        // Calculate the total score, science score, and humanities score using class methods
+        const totalScore = this.totalScore();
+        const scienceScore = this.scienceScore();
+        const humanitiesScore = this.humanitiesScore();
+  
+        // Determine if the examinee has passed based on the total score and division
+        return totalScore >= 350 && ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160));
+    }
 }
