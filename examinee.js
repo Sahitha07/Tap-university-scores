@@ -12,7 +12,11 @@ export class Examinee {
 
   // Method to calculate and return the total score of the examinee
   totalScore() {
-      return this.english + this.math + this.science + this.japanese + this.geographyHistory;
+    if (this.division === 's') {
+      return this.english + this.math + this.science;
+    } else if (this.division === 'l') {
+      return this.english + this.math + this.japanese + this.geographyHistory;
+    }
   }
 
   // Method to calculate and return the science score of the examinee
@@ -27,13 +31,14 @@ export class Examinee {
 
   // Method to check if the examinee has passed the exam based on the total score and division
   isPassed() {
-      // Calculate the total score, science score, and humanities score using class methods
-      const totalScore = this.totalScore();
-      const scienceScore = this.scienceScore();
-      const humanitiesScore = this.humanitiesScore();
+    const totalScore = this.totalScore();
+    const scienceScore = this.scienceScore();
+    const humanitiesScore = this.humanitiesScore();
 
-      // Determine if the examinee has passed based on the total score and division
-      return totalScore >= 350 && ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160));
+    return (
+      totalScore >= 350 &&
+      ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
+    );
   }
 }
 
