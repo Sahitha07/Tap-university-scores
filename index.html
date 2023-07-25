@@ -112,10 +112,6 @@ function isValidExamineeData(examineeData) {
       const examineeData = rawData.split('\n');
       passersCount = 0; // Reset passersCount before processing new data
 
-      if (division !== 'l' && division !== 's') {
-      alert('Invalid classification. Please use "l" or "s".');
-      return;
-    }
 
       if (!isValidExamineeData(examineeData)) {
     alert('Invalid examinee data format! Please make sure the marks are below 100.');
