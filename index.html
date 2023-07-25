@@ -136,40 +136,30 @@
 
 
 let passersCount = 0;
-const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
 
 function isValidExamineeData(examineeData) {
-  const regex = /^[ls]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
+      const regex = /^[sl]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
 
-  for (const data of examineeData) {
-    if (!regex.test(data)) {
-      return false;
-    }
-  }
+      for (const data of examineeData) {
+        if (!regex.test(data)) {
+          return false;
+        }
+      }
 
-  return true;
-}
-
-function isWithinRange(score) {
-      return score >= 0 && score <= 100;
+      return true;
     }
 
     function processExamineeData() {
       const rawData = document.getElementById('examineeData').value.trim();
       const examineeData = rawData.split('\n');
-
-
       passersCount = 0; // Reset passersCount before processing new data
 
-    
-
       if (!isValidExamineeData(examineeData)) {
-    alert('Invalid examinee data format! Please make sure the marks are below 100.');
-    return;
-  }
+        alert('Invalid examinee data format! Please make sure the marks are below 100 and the division is either "s" or "l".');
+        return;
+      }
 
-
-  const examination = new Examination();
+      const examination = new Examination();
 
       for (const data of examineeData) {
         const [division, english, math, science, japanese, geography] = data.split(' ');
