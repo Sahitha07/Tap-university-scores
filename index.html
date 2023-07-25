@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,6 +79,60 @@
 </div>
 
 <script>
+  class Examinee {
+      constructor(division, english, math, science, japanese, geographyHistory) {
+        this.division = division;
+        this.english = english;
+        this.math = math;
+        this.science = science;
+        this.japanese = japanese;
+        this.geographyHistory = geographyHistory;
+      }
+
+      totalScore() {
+        return this.english + this.math + this.science + this.japanese + this.geographyHistory;
+      }
+
+      scienceScore() {
+        return this.math + this.science;
+      }
+
+      humanitiesScore() {
+        return this.japanese + this.geographyHistory;
+      }
+
+      isPassed() {
+        const totalScore = this.totalScore();
+        const scienceScore = this.scienceScore();
+        const humanitiesScore = this.humanitiesScore();
+
+        return (
+          totalScore >= 350 &&
+          ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
+        );
+      }
+    }
+
+    class Examination {
+      constructor() {
+        this.examinees = [];
+      }
+
+      addExaminee(examinee) {
+        this.examinees.push(examinee);
+      }
+
+      countPassers() {
+        let passers = 0;
+        for (const examinee of this.examinees) {
+          if (examinee.isPassed()) {
+            passers++;
+          }
+        }
+        return passers;
+      }
+    }
+
 
 let passersCount = 0;
 const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
@@ -96,32 +149,57 @@ function isValidExamineeData(examineeData) {
   return true;
 }
 
-  
-
-    function isPassed(totalScores, scienceScores, humanitiesScores, division) {
-      // ... (same code as before)
-      const totalScore = totalScores.reduce((total, score) => total + score, 0);
-      const scienceScore = scienceScores.reduce((total, score) => total + score, 0);
-      const humanitiesScore = humanitiesScores.reduce((total, score) => total + score, 0);
-
-      return totalScore >= 350 && ((division === 'l' && humanitiesScore >= 160) || (division === 's' && scienceScore >= 160));
+function isWithinRange(score) {
+      return score >= 0 && score <= 100;
     }
 
     function processExamineeData() {
       const rawData = document.getElementById('examineeData').value.trim();
       const examineeData = rawData.split('\n');
+      const numExaminees = parseInt(examineeData.shift(), 10); // Extract the number of examinees
+
+
+      if (numExaminees < 1 || numExaminees > 1000) {
+        alert('Number of examinees should be between 1 and 1000.');
+        return;
+      }
+
+
       passersCount = 0; // Reset passersCount before processing new data
 
+    
 
       if (!isValidExamineeData(examineeData)) {
     alert('Invalid examinee data format! Please make sure the marks are below 100.');
     return;
   }
 
+  const examination = new Examination();
 
-      for (const data of examineeData) {
+
+
+  for (const data of examineeData) {
         const [division, english, math, science, japanese, geography] = data.split(' ');
-        const totalScores = [parseInt(english), parseInt(math), parseInt(science), parseInt(japanese), parseInt(geography)];
+        const totalScores = [
+          parseInt(english),
+          parseInt(math),
+          parseInt(science),
+          parseInt(japanese),
+          parseInt(geography),
+        ];
+
+        // Check if scores are within the valid range
+        if (
+          !isWithinRange(totalScores[0]) ||
+          !isWithinRange(totalScores[1]) ||
+          !isWithinRange(totalScores[2]) ||
+          !isWithinRange(totalScores[3]) ||
+          !isWithinRange(totalScores[4])
+        ) {
+          alert('Invalid examinee data format! Please make sure the marks are below 100.');
+          return;
+        }
+
         const scienceScores = [parseInt(math), parseInt(science)];
         const humanitiesScores = [parseInt(japanese), parseInt(geography)];
 
@@ -131,8 +209,9 @@ function isValidExamineeData(examineeData) {
       }
 
       const outputElement = document.getElementById('output');
-      outputElement.textContent = "Number of Passers: " + passersCount;
+      outputElement.textContent = 'Number of Passers: ' + passersCount;
     }
+    
 
     function addSubject() {
   const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
