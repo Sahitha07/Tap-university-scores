@@ -80,38 +80,40 @@
 
 <script>
   class Examinee {
-      constructor(division, english, math, science, japanese, geographyHistory) {
-        this.division = division;
-        this.english = english;
-        this.math = math;
-        this.science = science;
-        this.japanese = japanese;
-        this.geographyHistory = geographyHistory;
-      }
+  constructor(division, english, math, science, japanese, geographyHistory) {
+    this.division = division;
+    this.english = english;
+    this.math = math;
+    this.science = science;
+    this.japanese = japanese;
+    this.geographyHistory = geographyHistory;
+  }
 
-      totalScore() {
-        return this.english + this.math + this.science + this.japanese + this.geographyHistory;
-      }
+  totalScore() {
+    return this.english + this.math + this.science + this.japanese + this.geographyHistory;
+  }
 
-      scienceScore() {
-        return this.math + this.science;
-      }
+  scienceScore() {
+    return this.math + this.science;
+  }
 
-      humanitiesScore() {
-        return this.japanese + this.geographyHistory;
-      }
+  humanitiesScore() {
+    return this.japanese + this.geographyHistory;
+  }
 
-      isPassed() {
-        const totalScore = this.totalScore();
-        const scienceScore = this.scienceScore();
-        const humanitiesScore = this.humanitiesScore();
+  isPassed() {
+    const totalScore = this.totalScore();
+    const scienceScore = this.scienceScore();
+    const humanitiesScore = this.humanitiesScore();
 
-        return (
-          totalScore >= 350 &&
-          ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
-        );
-      }
-    }
+    return (
+      totalScore >= 350 &&
+      ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
+    );
+  }
+}
+  
+    
 
     class Examination {
       constructor() {
@@ -134,7 +136,7 @@
     }
 
 
- let passersCount = 0;
+    let passersCount = 0;
   const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
 
   function isValidExamineeData(examineeData) {
@@ -153,54 +155,36 @@ function isWithinRange(score) {
       return score >= 0 && score <= 100;
     }
 
-    function processExamineeData() {
+function processExamineeData() {
       const rawData = document.getElementById('examineeData').value.trim();
       const examineeData = rawData.split('\n');
       const numExaminees = parseInt(examineeData.shift(), 10); // Extract the number of examinees
-
 
       if (numExaminees < 1 || numExaminees > 1000) {
         alert('Number of examinees should be between 1 and 1000.');
         return;
       }
 
-
       passersCount = 0; // Reset passersCount before processing new data
 
-    
-
       if (!isValidExamineeData(examineeData)) {
-    alert('Invalid examinee data format! Please make sure the marks are below 100.');
-    return;
-  }
+        alert('Invalid examinee data format! Please make sure the marks are below 100.');
+        return;
+      }
 
-  const examination = new Examination();
+      const examination = new Examination();
 
-
-
-  for (const data of examineeData) {
-        const [division, english, math, science, japanese, geography] = data.split(' ');
-        const totalScores = [
-          parseInt(english),
-          parseInt(math),
-          parseInt(science),
-          parseInt(japanese),
-          parseInt(geography),
-        ];
+      for (const data of examineeData) {
+        const [division, ...scores] = data.split(' ');
+        const totalScores = scores.map(score => parseInt(score));
 
         // Check if scores are within the valid range
-        if (
-          !isWithinRange(totalScores[0]) ||
-          !isWithinRange(totalScores[1]) ||
-          !isWithinRange(totalScores[2]) ||
-          !isWithinRange(totalScores[3]) ||
-          !isWithinRange(totalScores[4])
-        ) {
+        if (totalScores.some(score => !isWithinRange(score))) {
           alert('Invalid examinee data format! Please make sure the marks are below 100.');
           return;
         }
 
-    const examinee = new Examinee(division, ...totalScores);
+        const examinee = new Examinee(division, ...totalScores);
         examination.addExaminee(examinee);
 
         if (examinee.isPassed()) {
@@ -212,6 +196,7 @@ function isWithinRange(score) {
       outputElement.textContent = 'Number of Passers: ' + passersCount;
     }
 
+    
 
     function addSubject() {
   const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
@@ -251,13 +236,13 @@ function updateSubjectToDeleteOptions() {
 }
 
 updateSubjectToDeleteOptions();
-
-  // Add event listeners
-    const processDataButton = document.getElementById('processDataBtn');
-    processDataButton.addEventListener('click', processExamineeData);
+ // Add event listeners
+ const processDataButton = document.getElementById('processDataBtn');
+ processDataButton.addEventListener('click', processExamineeData);
 
   </script>
 </body>
 </html>
+
 
 
