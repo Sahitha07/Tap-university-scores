@@ -153,65 +153,54 @@ function isWithinRange(score) {
       return score >= 0 && score <= 100;
     }
 
-    function processExamineeData() {
-      const rawData = document.getElementById('examineeData').value.trim();
-      const examineeData = rawData.split('\n');
-      const numExaminees = parseInt(examineeData.shift(), 10); // Extract the number of examinees
+  
+  function processExamineeData() {
+  const rawData = document.getElementById('examineeData').value.trim();
+  const examineeData = rawData.split('\n');
+  const numExaminees = parseInt(examineeData.shift(), 10); // Extract the number of examinees
 
-
-      if (numExaminees < 1 || numExaminees > 1000) {
-        alert('Number of examinees should be between 1 and 1000.');
-        return;
-      }
-
-
-      passersCount = 0; // Reset passersCount before processing new data
-
-    
-
-      if (!isValidExamineeData(examineeData)) {
-    alert('Invalid examinee data format! Please make sure the marks are below 100.');
+  if (numExaminees < 1 || numExaminees > 1000) {
+    alert('Number of examinees should be between 1 and 1000.');
     return;
   }
 
+  passersCount = 0; // Reset passersCount before processing new data
   const examination = new Examination();
 
-
-
   for (const data of examineeData) {
-        const [division, english, math, science, japanese, geography] = data.split(' ');
-        const totalScores = [
-          parseInt(english),
-          parseInt(math),
-          parseInt(science),
-          parseInt(japanese),
-          parseInt(geography),
-        ];
+    const [division, english, math, science, japanese, geography] = data.split(' ');
+    const totalScores = [
+      parseInt(english),
+      parseInt(math),
+      parseInt(science),
+      parseInt(japanese),
+      parseInt(geography),
+    ];
 
-        // Check if scores are within the valid range
-        if (
-          !isWithinRange(totalScores[0]) ||
-          !isWithinRange(totalScores[1]) ||
-          !isWithinRange(totalScores[2]) ||
-          !isWithinRange(totalScores[3]) ||
-          !isWithinRange(totalScores[4])
-        ) {
-          alert('Invalid examinee data format! Please make sure the marks are below 100.');
-          return;
-        }
-
-    const examinee = new Examinee(division, ...totalScores);
-        examination.addExaminee(examinee);
-
-        if (examinee.isPassed()) {
-          passersCount++;
-        }
-      }
-
-      const outputElement = document.getElementById('output');
-      outputElement.textContent = 'Number of Passers: ' + passersCount;
+    // Check if scores are within the valid range
+    if (
+      !isWithinRange(totalScores[0]) ||
+      !isWithinRange(totalScores[1]) ||
+      !isWithinRange(totalScores[2]) ||
+      !isWithinRange(totalScores[3]) ||
+      !isWithinRange(totalScores[4])
+    ) {
+      alert('Invalid examinee data format! Please make sure the marks are below 100.');
+      return;
     }
 
+    const examinee = new Examinee(division, ...totalScores);
+    examination.addExaminee(examinee);
+  }
+
+  passersCount = examination.countPassers();
+
+  const outputElement = document.getElementById('output');
+  outputElement.textContent = 'Number of Passers: ' + passersCount;
+}
+
+
+    
 
     function addSubject() {
   const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
