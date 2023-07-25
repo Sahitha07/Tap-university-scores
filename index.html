@@ -134,20 +134,20 @@
     }
 
 
-let passersCount = 0;
-const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
+ let passersCount = 0;
+  const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
 
-function isValidExamineeData(examineeData) {
-  const regex = /^[ls]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
+  function isValidExamineeData(examineeData) {
+    const regex = /^[sl]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
 
-  for (const data of examineeData) {
-    if (!regex.test(data)) {
-      return false;
+    for (const data of examineeData) {
+      if (!regex.test(data)) {
+        return false;
+      }
     }
-  }
 
-  return true;
-}
+    return true;
+  }
 
 function isWithinRange(score) {
       return score >= 0 && score <= 100;
