@@ -14,14 +14,16 @@ class Examinee {
 
   isPassed() {
     const totalScore = this.totalScore();
+
     const scienceSubjects = [this.math, this.science];
     const humanitiesSubjects = [this.japanese, this.geography];
 
     const passedTotalScore = totalScore >= 350;
-    const passedScienceSubjects = this.division === 's' && scienceSubjects.filter(s => s >= 40).length === 2;
-    const passedHumanitiesSubjects = this.division === 'l' && humanitiesSubjects.filter(h => h >= 40).length === 2;
+    const passedScienceSubjects = this.division === 's' && scienceSubjects.filter(s => s >= 80).length >= 2;
+    const passedHumanitiesSubjects = this.division === 'l' && humanitiesSubjects.filter(h => h >= 80).length >= 2;
 
     return passedTotalScore && (passedScienceSubjects || passedHumanitiesSubjects);
   }
 }
+
 
