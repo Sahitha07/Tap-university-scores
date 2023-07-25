@@ -1,35 +1,25 @@
-// Examinee class representing an individual examinee
-export class Examinee {
+class Examinee {
   constructor(division, english, math, science, japanese, geographyHistory) {
-      // Initialize properties for each subject score and division
-      this.division = division;
-      this.english = english;
-      this.math = math;
-      this.science = science;
-      this.japanese = japanese;
-      this.geographyHistory = geographyHistory;
+    this.division = division;
+    this.english = english;
+    this.math = math;
+    this.science = science;
+    this.japanese = japanese;
+    this.geographyHistory = geographyHistory;
   }
 
-  // Method to calculate and return the total score of the examinee
   totalScore() {
-    if (this.division === 's') {
-      return this.english + this.math + this.science;
-    } else if (this.division === 'l') {
-      return this.english + this.math + this.japanese + this.geographyHistory;
-    }
+    return this.english + this.math + this.science + this.japanese + this.geographyHistory;
   }
 
-  // Method to calculate and return the science score of the examinee
   scienceScore() {
-      return this.math + this.science;
+    return this.math + this.science;
   }
 
-  // Method to calculate and return the humanities score of the examinee
   humanitiesScore() {
-      return this.japanese + this.geographyHistory;
+    return this.japanese + this.geographyHistory;
   }
 
-  // Method to check if the examinee has passed the exam based on the total score and division
   isPassed() {
     const totalScore = this.totalScore();
     const scienceScore = this.scienceScore();
