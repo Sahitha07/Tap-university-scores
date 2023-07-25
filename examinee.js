@@ -23,7 +23,8 @@ class Examinee {
   isPassed() {
     const totalScore = this.totalScore();
     const scienceScore = this.scienceScore();
-    const humanitiesScore = this.humanitiesScore();
+    const humanitiesScore = this.japanese + this.geographyHistory;
+
 
     return (
       totalScore >= 350 &&
