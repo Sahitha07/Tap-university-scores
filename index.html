@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Examinee Data Input</title>
+  <title>Tap University Examinee Data Input</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -84,6 +84,18 @@
 let passersCount = 0;
 const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
 
+function isValidExamineeData(examineeData) {
+  const regex = /^[ls]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
+
+  for (const data of examineeData) {
+    if (!regex.test(data)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
   
 
     function isPassed(totalScores, scienceScores, humanitiesScores, division) {
@@ -99,6 +111,12 @@ const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
       const rawData = document.getElementById('examineeData').value.trim();
       const examineeData = rawData.split('\n');
       passersCount = 0; // Reset passersCount before processing new data
+
+      if (!isValidExamineeData(examineeData)) {
+    alert('Invalid examinee data format! Please make sure the marks are below 100.');
+    return;
+  }
+
 
       for (const data of examineeData) {
         const [division, english, math, science, japanese, geography] = data.split(' ');
