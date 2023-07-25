@@ -42,4 +42,3 @@ function startExam() {
 // Add event listener to the "Start Examination" button
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', startExam);
-
