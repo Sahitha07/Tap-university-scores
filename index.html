@@ -145,6 +145,40 @@
 
 let passersCount = 0;
 
+    function createExamineeInputs() {
+    const numExaminees = parseInt(document.getElementById('numExaminees').value);
+    const examineeDataContainer = document.getElementById('examineeDataContainer');
+    examineeDataContainer.innerHTML = ''; // Clear previous content
+
+    for (let i = 0; i < numExaminees; i++) {
+      const examineeDiv = document.createElement('div');
+      examineeDiv.innerHTML = `
+        <label for="division-${i}">Division (s/l):</label>
+        <input type="text" id="division-${i}" maxlength="1" required>
+
+        <label for="english-${i}">English:</label>
+        <input type="number" id="english-${i}" required>
+
+        <label for="math-${i}">Math:</label>
+        <input type="number" id="math-${i}" required>
+
+        <label for="science-${i}">Science:</label>
+        <input type="number" id="science-${i}" required>
+
+        <label for="japanese-${i}">Japanese:</label>
+        <input type="number" id="japanese-${i}" required>
+
+        <label for="geography-${i}">Geography/History:</label>
+        <input type="number" id="geography-${i}" required>
+      `;
+      examineeDataContainer.appendChild(examineeDiv);
+    }
+  }
+
+  // Add event listener to the "Start Examination" button
+  const startButton = document.getElementById('startButton');
+  startButton.addEventListener('click', createExamineeInputs);
+
 function isValidExamineeData(examineeData) {
       const regex = /^[sl]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
 
@@ -183,39 +217,6 @@ function isValidExamineeData(examineeData) {
       outputElement.textContent = "Number of Passers: " + passersCount;
     }
 
-   function createExamineeInputs() {
-    const numExaminees = parseInt(document.getElementById('numExaminees').value);
-    const examineeDataContainer = document.getElementById('examineeDataContainer');
-    examineeDataContainer.innerHTML = ''; // Clear previous content
-
-    for (let i = 0; i < numExaminees; i++) {
-      const examineeDiv = document.createElement('div');
-      examineeDiv.innerHTML = `
-        <label for="division-${i}">Division (s/l):</label>
-        <input type="text" id="division-${i}" maxlength="1" required>
-
-        <label for="english-${i}">English:</label>
-        <input type="number" id="english-${i}" required>
-
-        <label for="math-${i}">Math:</label>
-        <input type="number" id="math-${i}" required>
-
-        <label for="science-${i}">Science:</label>
-        <input type="number" id="science-${i}" required>
-
-        <label for="japanese-${i}">Japanese:</label>
-        <input type="number" id="japanese-${i}" required>
-
-        <label for="geography-${i}">Geography/History:</label>
-        <input type="number" id="geography-${i}" required>
-      `;
-      examineeDataContainer.appendChild(examineeDiv);
-    }
-  }
-
-  // Add event listener to the "Start Examination" button
-  const startButton = document.getElementById('startButton');
-  startButton.addEventListener('click', createExamineeInputs);
 
     
     
