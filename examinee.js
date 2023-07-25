@@ -1,11 +1,6 @@
 // Examinee class representing an individual examinee
 export class Examinee {
   constructor(division, english, math, science, japanese, geographyHistory) {
-
-    if (division !== 's' && division !== 'l') {
-      alert('Please use "s" or "l" for the division. Example: s 70 78 82 57 74');
-      return; // Exit the constructor if division is invalid
-    }
       // Initialize properties for each subject score and division
       this.division = division;
       this.english = english;
