@@ -1,298 +1,123 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tap University Examinee Data Input</title>
+  <title>Examinee Data Input</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      padding: 20px;
-      background-color: #b2899e; /* Add background color to the body */
-      color: #050211; /* Set font color for the text */
-      border: 2px solid #ccc; /* Add a border to the body */
-
-    }
-
-    textarea {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #dcc7e0;
-      color: #050000;
-      border: none;
-      cursor: pointer;
-    }
-
-    p#output {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    li {
-      margin-bottom: 10px;
-    }
-
-    input[type="text"] {
-      width: 70px;
-      margin-right: 5px;
-    }
-
-    /* Additional style for the add and delete buttons */
-    .add-btn,
-    .delete-btn {
-      padding: 5px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      margin-left: 5px;
-    }
+    /* Your CSS styles here */
   </style>
 </head>
 <body>
-    <h1>Examinee Data Input</h1>
-
-   
-  <label for="numExaminees">Number of Examinees (N):</label>
-  <input type="number" id="numExaminees" placeholder="Enter number of examinees">
-  <button id="startButton">Start Examination</button>
-
-  <div id="examineeDataContainer">
-    <!-- The examinee data will be added here dynamically -->
-  </div>
-
+  <h1>Examinee Data Input</h1>
+  <textarea id="examineeData" rows="5" cols="40" placeholder="Enter examinee marks here"></textarea>
   <br>
   <button id="processData" onclick="processExamineeData()">Process Data</button>
   <p id="output"></p>
   <ul id="outputList"></ul>
 
-<!-- Add Subject functionality -->
-<div>
-  <input type="text" id="subjectName" placeholder="Enter subject name">
-  <input type="number" id="subjectScore" placeholder="Enter subject score">
-  <button id="addSubjectBtn" onclick="addSubject()">Add Subject</button>
-</div>
-<br>
-<br>
-<!-- Delete Subject functionality -->
-<div>
-  <select id="subjectToDelete">
-    <option disabled selected>Select subject to delete</option>
-  </select>
-  <button id="deleteSubjectBtn" onclick="deleteSubject()">Delete Subject</button>
-</div>
+  <!-- Add Subject functionality -->
+  <div>
+    <input type="text" id="subjectName" placeholder="Enter subject name">
+    <input type="number" id="subjectScore" placeholder="Enter subject score">
+    <button id="addSubjectBtn" onclick="addSubject()">Add Subject</button>
+  </div>
+  <br>
+  <!-- Delete Subject functionality -->
+  <div>
+    <select id="subjectToDelete">
+      <option disabled selected>Select subject to delete</option>
+    </select>
+    <button id="deleteSubjectBtn" onclick="deleteSubject()">Delete Subject</button>
+  </div>
 
-<script>
-  class Examinee {
-      constructor(division, english, math, science, japanese, geographyHistory) {
-        this.division = division;
-        this.english = english;
-        this.math = math;
-        this.science = science;
-        this.japanese = japanese;
-        this.geographyHistory = geographyHistory;
-      }
+  <script>
+    const subjects = ['english', 'math', 'science', 'japanese', 'geography'];
 
-      totalScore() {
-        return this.english + this.math + this.science + this.japanese + this.geographyHistory;
-      }
-
-      scienceScore() {
-        return this.math + this.science;
-      }
-
-      humanitiesScore() {
-        return this.japanese + this.geographyHistory;
-      }
-
-      isPassed() {
-        const totalScore = this.totalScore();
-        const scienceScore = this.scienceScore();
-        const humanitiesScore = this.humanitiesScore();
-
-        return (
-          totalScore >= 350 &&
-          ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
-        );
-      }
+    function isValidMarks(marks) {
+      return marks.every(mark => mark >= 0 && mark <= 100);
     }
 
-    class Examination {
-      constructor() {
-        this.examinees = [];
-      }
-
-      addExaminee(examinee) {
-        this.examinees.push(examinee);
-      }
-
-      countPassers() {
-        let passers = 0;
-        for (const examinee of this.examinees) {
-          if (examinee.isPassed()) {
-            passers++;
-          }
-        }
-        return passers;
-      }
+    function isValidDivision(division) {
+      return division === 's' || division === 'l';
     }
 
-
-let passersCount = 0;
-
-    function addExamineeInputs(numExaminees) {
-    const examineeDataContainer = document.getElementById('examineeDataContainer');
-    examineeDataContainer.innerHTML = ''; // Clear previous content
-
-    for (let i = 0; i < numExaminees; i++) {
-      const examineeInputHTML = `
-        <div>
-          <label for="division-${i}">Division (s/l):</label>
-          <input type="text" id="division-${i}" maxlength="1" required>
-
-          <label for="english-${i}">English:</label>
-          <input type="number" id="english-${i}" required>
-
-          <label for="math-${i}">Math:</label>
-          <input type="number" id="math-${i}" required>
-
-          <label for="science-${i}">Science:</label>
-          <input type="number" id="science-${i}" required>
-
-          <label for="japanese-${i}">Japanese:</label>
-          <input type="number" id="japanese-${i}" required>
-
-          <label for="geography-${i}">Geography/History:</label>
-          <input type="number" id="geography-${i}" required>
-        </div>
-      `;
-
-      examineeDataContainer.insertAdjacentHTML('beforeend', examineeInputHTML);
-    }
-  }
-
-  function isValidExaminee(division, english, math, science, japanese, geography) {
-    const marksRegex = /^(100|[0-9]{1,2})$/;
-    const divisionRegex = /^[sl]$/;
-    return (
-      marksRegex.test(english) &&
-      marksRegex.test(math) &&
-      marksRegex.test(science) &&
-      marksRegex.test(japanese) &&
-      marksRegex.test(geography) &&
-      divisionRegex.test(division)
-    );
-  }
-
-function processExamineeData() {
-    const examineeDataContainer = document.getElementById('examineeDataContainer');
-    const examineeInputs = examineeDataContainer.querySelectorAll('div');
-    passersCount = 0; // Reset passersCount before processing new data
-
-    const examineeData = [];
-
-    for (const examineeInput of examineeInputs) {
-      const division = examineeInput.querySelector('input[type="text"]').value.trim().toLowerCase();
-      const english = parseInt(examineeInput.querySelector('input#english').value);
-      const math = parseInt(examineeInput.querySelector('input#math').value);
-      const science = parseInt(examineeInput.querySelector('input#science').value);
-      const japanese = parseInt(examineeInput.querySelector('input#japanese').value);
-      const geography = parseInt(examineeInput.querySelector('input#geography').value);
-
-      if (!isValidExaminee(division, english, math, science, japanese, geography)) {
-        alert('Invalid examinee data format! Please make sure the marks are below 100 and division is "s" or "l".');
-        return;
-      }
-
-      examineeData.push({
-        division,
-        english,
-        math,
-        science,
-        japanese,
-        geography,
+    function isValidExamineeData(examineeData) {
+      return examineeData.every(data => {
+        const [division, ...marks] = data.split(' ');
+        return isValidDivision(division) && isValidMarks(marks.map(Number));
       });
     }
 
-    for (const data of examineeData) {
-      const { division, english, math, science, japanese, geography } = data;
-      const totalScores = [english, math, science, japanese, geography];
-      const scienceScores = [math, science];
-      const humanitiesScores = [japanese, geography];
+    function isPassed(totalScores, scienceScores, humanitiesScores, division) {
+  const totalScore = totalScores.reduce((total, score) => total + score, 0);
+  const scienceScore = scienceScores.reduce((total, score) => total + score, 0);
+  const humanitiesScore = humanitiesScores.reduce((total, score) => total + score, 0);
 
-      if (isPassed(totalScores, scienceScores, humanitiesScores, division)) {
-        passersCount++;
+  return totalScore >= 350 && ((division === 'l' && humanitiesScore >= 160) || (division === 's' && scienceScore >= 160));
+}
+
+    function processExamineeData() {
+      const rawData = document.getElementById('examineeData').value.trim();
+      const examineeData = rawData.split('\n');
+      let passersCount = 0;
+
+      if (!isValidExamineeData(examineeData)) {
+        alert('Invalid examinee data format! Please make sure the data follows the correct format.');
+        return;
+      }
+
+      for (const data of examineeData) {
+        const [division, english, math, science, japanese, geography] = data.split(' ');
+        const totalScores = [parseInt(english), parseInt(math), parseInt(science), parseInt(japanese), parseInt(geography)];
+        const scienceScores = [parseInt(math), parseInt(science)];
+        const humanitiesScores = [parseInt(japanese), parseInt(geography)];
+
+        if (isPassed(totalScores, scienceScores, humanitiesScores, division)) {
+          passersCount++;
+        }
+      }
+
+      const outputElement = document.getElementById('output');
+      outputElement.textContent = "Number of Passers: " + passersCount;
+    }
+
+    function addSubject() {
+      const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
+      const subjectScore = parseInt(document.getElementById('subjectScore').value);
+
+      if (subjectName && !isNaN(subjectScore)) {
+        subjects.push(subjectName);
+
+        // Reset input fields
+        document.getElementById('subjectName').value = '';
+        document.getElementById('subjectScore').value = '';
+
+        updateSubjectToDeleteOptions();
       }
     }
 
-    const outputElement = document.getElementById('output');
-    outputElement.textContent = "Number of Passers: " + passersCount;
-  }
+    function deleteSubject() {
+      const subjectToDelete = document.getElementById('subjectToDelete').value;
+      const indexToDelete = subjects.indexOf(subjectToDelete);
 
-
-    
-    
-
-    function addSubject() {
-  const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
-  const subjectScore = parseInt(document.getElementById('subjectScore').value);
-
-  if (subjectName && !isNaN(subjectScore)) {
-    subjects.push(subjectName);
-
-    // Reset input fields
-    document.getElementById('subjectName').value = '';
-    document.getElementById('subjectScore').value = '';
-
-    updateSubjectToDeleteOptions();
-  }
-}
-
-function deleteSubject() {
-  const subjectToDelete = document.getElementById('subjectToDelete').value;
-  const indexToDelete = subjects.indexOf(subjectToDelete);
-
-  if (indexToDelete !== -1) {
-    subjects.splice(indexToDelete, 1);
-    updateSubjectToDeleteOptions();
-  }
-}
-
-function updateSubjectToDeleteOptions() {
-  const subjectToDeleteElement = document.getElementById('subjectToDelete');
-  subjectToDeleteElement.innerHTML = '<option disabled selected>Select subject to delete</option>';
-
-  for (const subject of subjects) {
-    const option = document.createElement('option');
-    option.value = subject;
-    option.textContent = subject;
-    subjectToDeleteElement.appendChild(option);
-  }
-}
-
-updateSubjectToDeleteOptions();
-
-  // Get the "Start Examination" button and add an event listener
-  const startButton = document.getElementById('startButton');
-  startButton.addEventListener('click', function () {
-    const numExaminees = parseInt(document.getElementById('numExaminees').value);
-
-    if (isNaN(numExaminees) || numExaminees <= 0) {
-      alert('Please enter a valid number of examinees (greater than 0).');
-      return;
+      if (indexToDelete !== -1) {
+        subjects.splice(indexToDelete, 1);
+        updateSubjectToDeleteOptions();
+      }
     }
 
-    addExamineeInputs(numExaminees);
-  });
+    function updateSubjectToDeleteOptions() {
+      const subjectToDeleteElement = document.getElementById('subjectToDelete');
+      subjectToDeleteElement.innerHTML = '<option disabled selected>Select subject to delete</option>';
 
-  // Get the "Process Data" button and add an event listener
-  const processDataButton = document.getElementById('processData');
-  processDataButton.addEventListener('click', processExamineeData);
+      for (const subject of subjects) {
+        const option = document.createElement('option');
+        option.value = subject;
+        option.textContent = subject;
+        subjectToDeleteElement.appendChild(option);
+      }
+    }
+
+    updateSubjectToDeleteOptions();
   </script>
 </body>
 </html>
