@@ -190,32 +190,50 @@ function isValidExamineeData(examineeData) {
 
       return true;
     }
+function processExamineeData() {
+    const examineeDataContainer = document.getElementById('examineeDataContainer');
+    const examineeInputs = examineeDataContainer.querySelectorAll('div');
+    passersCount = 0; // Reset passersCount before processing new data
 
-    function processExamineeData() {
-      const rawData = document.getElementById('examineeData').value.trim();
-      const examineeData = rawData.split('\n');
-      passersCount = 0; // Reset passersCount before processing new data
+    const examineeData = [];
 
-      if (!isValidExamineeData(examineeData)) {
-        alert('Invalid examinee data format! Please make sure the marks are below 100 and the division is either "s" or "l".');
+    for (const examineeInput of examineeInputs) {
+      const division = examineeInput.querySelector('input[type="text"]').value.trim().toLowerCase();
+      const english = parseInt(examineeInput.querySelector('input#english').value);
+      const math = parseInt(examineeInput.querySelector('input#math').value);
+      const science = parseInt(examineeInput.querySelector('input#science').value);
+      const japanese = parseInt(examineeInput.querySelector('input#japanese').value);
+      const geography = parseInt(examineeInput.querySelector('input#geography').value);
+
+      if (!isValidExaminee(division, english, math, science, japanese, geography)) {
+        alert('Invalid examinee data format! Please make sure the marks are below 100 and division is "s" or "l".');
         return;
       }
 
-      const examination = new Examination();
-
-      for (const data of examineeData) {
-        const [division, english, math, science, japanese, geography] = data.split(' ');
-        const examinee = new Examinee(division, parseInt(english), parseInt(math), parseInt(science), parseInt(japanese), parseInt(geography));
-        examination.addExaminee(examinee);
-
-        if (examinee.isPassed()) {
-          passersCount++;
-        }
-      }
-
-      const outputElement = document.getElementById('output');
-      outputElement.textContent = "Number of Passers: " + passersCount;
+      examineeData.push({
+        division,
+        english,
+        math,
+        science,
+        japanese,
+        geography,
+      });
     }
+
+    for (const data of examineeData) {
+      const { division, english, math, science, japanese, geography } = data;
+      const totalScores = [english, math, science, japanese, geography];
+      const scienceScores = [math, science];
+      const humanitiesScores = [japanese, geography];
+
+      if (isPassed(totalScores, scienceScores, humanitiesScores, division)) {
+        passersCount++;
+      }
+    }
+
+    const outputElement = document.getElementById('output');
+    outputElement.textContent = "Number of Passers: " + passersCount;
+  }
 
 
     
