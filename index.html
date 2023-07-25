@@ -174,7 +174,9 @@ function isValidExamineeData(examineeData) {
       const outputElement = document.getElementById('output');
       outputElement.textContent = "Number of Passers: " + passersCount;
     }
-    
+      // Add event listener to the "Process Data" button
+    const processDataButton = document.getElementById('processData');
+    processDataButton.addEventListener('click', processExamineeData);
 
     function addSubject() {
   const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
