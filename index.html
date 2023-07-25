@@ -101,17 +101,26 @@
         return this.japanese + this.geographyHistory;
       }
 
-      isPassed() {
-        const totalScore = this.totalScore();
-        const scienceScore = this.scienceScore();
-        const humanitiesScore = this.humanitiesScore();
+    isPassed() {
+          const totalScore = this.totalScore();
+          const scienceScore = this.scienceScore();
+          const humanitiesScore = this.humanitiesScore();
 
-        return (
-          totalScore >= 350 &&
-          ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
-        );
+      if (totalScore < 350) {
+            return false;
+          }
+
+          if (this.division === 'l' && humanitiesScore >= 160) {
+            return true;
+          }
+
+          if (this.division === 's' && scienceScore >= 160) {
+            return true;
+          }
+
+          return false;
+        }
       }
-    }
 
     class Examination {
       constructor() {
