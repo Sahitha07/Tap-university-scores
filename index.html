@@ -175,16 +175,26 @@ function processExamineeData() {
       const examination = new Examination();
 
       for (const data of examineeData) {
-        const [division, ...scores] = data.split(' ');
-        const totalScores = scores.map(score => parseInt(score));
+        const [division, e, m, s, j, g] = data.split(' ');
+        const english = parseInt(e);
+        const math = parseInt(m);
+        const science = parseInt(s);
+        const japanese = parseInt(j);
+        const geography = parseInt(g);
 
         // Check if scores are within the valid range
-        if (totalScores.some(score => !isWithinRange(score))) {
+        if (
+          !isWithinRange(english) ||
+          !isWithinRange(math) ||
+          !isWithinRange(science) ||
+          !isWithinRange(japanese) ||
+          !isWithinRange(geography)
+        ) {
           alert('Invalid examinee data format! Please make sure the marks are below 100.');
           return;
         }
 
-        const examinee = new Examinee(division, ...totalScores);
+        const examinee = new Examinee(division, english, math, science, japanese, geography);
         examination.addExaminee(examinee);
 
         if (examinee.isPassed()) {
@@ -194,7 +204,6 @@ function processExamineeData() {
 
       const outputElement = document.getElementById('output');
       outputElement.textContent = 'Number of Passers: ' + passersCount;
-    }
 
     
 
