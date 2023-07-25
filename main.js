@@ -1,12 +1,16 @@
+// Import the Examinee and Examination classes from their respective files
 import { Examinee } from './examinee.js';
 import { Examination } from './examination.js';
 
+// Function to start the exam and generate examinee data input fields dynamically
 function startExam() {
+  // Get the number of examinees from the input field
   const numExaminees = parseInt(document.getElementById('numExaminees').value);
   const examineeDataContainer = document.getElementById('examineeData');
   examineeDataContainer.innerHTML = ''; // Clear previous content
   let examineeDataHTML = '';
 
+  // Loop through the number of examinees and create input fields for each examinee
   for (let i = 0; i < numExaminees; i++) {
     examineeDataHTML += `
       <div>
@@ -31,6 +35,7 @@ function startExam() {
     `;
   }
 
+  // Populate the examinee data container with the generated input fields
   examineeDataContainer.innerHTML = examineeDataHTML;
 }
 
