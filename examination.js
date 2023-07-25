@@ -1,38 +1,44 @@
-// Examinee class representing an individual examinee
-export class Examinee {
-    constructor(division, english, math, science, japanese, geographyHistory) {
-        // Initialize properties for each subject score and division
-        this.division = division;
-        this.english = english;
-        this.math = math;
-        this.science = science;
-        this.japanese = japanese;
-        this.geographyHistory = geographyHistory;
-    }
-  
-    // Method to calculate and return the total score of the examinee
-    totalScore() {
-        return this.english + this.math + this.science + this.japanese + this.geographyHistory;
-    }
-  
-    // Method to calculate and return the science score of the examinee
-    scienceScore() {
-        return this.math + this.science;
-    }
-  
-    // Method to calculate and return the humanities score of the examinee
-    humanitiesScore() {
-        return this.japanese + this.geographyHistory;
-    }
-  
-    // Method to check if the examinee has passed the exam based on the total score and division
-    isPassed() {
-        // Calculate the total score, science score, and humanities score using class methods
-        const totalScore = this.totalScore();
-        const scienceScore = this.scienceScore();
-        const humanitiesScore = this.humanitiesScore();
-  
-        // Determine if the examinee has passed based on the total score and division
-        return totalScore >= 350 && ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160));
-    }
+// Import the Examinee and Examination classes from their respective files
+import { Examinee } from './examinee.js';
+import { Examination } from './examination.js';
+
+// Function to start the exam and generate examinee data input fields dynamically
+function startExam() {
+  // Get the number of examinees from the input field
+  const numExaminees = parseInt(document.getElementById('numExaminees').value);
+  const examineeDataContainer = document.getElementById('examineeData');
+  examineeDataContainer.innerHTML = ''; // Clear previous content
+  let examineeDataHTML = '';
+
+  // Loop through the number of examinees and create input fields for each examinee
+  for (let i = 0; i < numExaminees; i++) {
+    examineeDataHTML += `
+      <div>
+        <label for="division-${i}">Division (s/l):</label>
+        <input type="text" id="division-${i}" maxlength="1" required>
+
+        <label for="english-${i}">English:</label>
+        <input type="number" id="english-${i}" required>
+
+        <label for="math-${i}">Math:</label>
+        <input type="number" id="math-${i}" required>
+
+        <label for="science-${i}">Science:</label>
+        <input type="number" id="science-${i}" required>
+
+        <label for="japanese-${i}">Japanese:</label>
+        <input type="number" id="japanese-${i}" required>
+
+        <label for="geography-${i}">Geography/History:</label>
+        <input type="number" id="geography-${i}" required>
+      </div>
+    `;
+  }
+
+  // Populate the examinee data container with the generated input fields
+  examineeDataContainer.innerHTML = examineeDataHTML;
 }
+
+// Add event listener to the "Start Examination" button
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', startExam);
