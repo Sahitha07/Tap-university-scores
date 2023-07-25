@@ -32,4 +32,3 @@ export class Examination {
     return passers;
   }
 }
-
