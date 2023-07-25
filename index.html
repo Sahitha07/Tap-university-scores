@@ -140,6 +140,7 @@
   function isValidExamineeData(examineeData) {
     const regex = /^[sl]\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})\s(?:100|[0-9]{1,2})$/;
 
+
     for (const data of examineeData) {
       if (!regex.test(data)) {
         return false;
