@@ -80,36 +80,30 @@
 
 <script>
   class Examinee {
-      constructor(division, english, math, science, japanese, geographyHistory) {
-        this.division = division;
-        this.english = english;
-        this.math = math;
-        this.science = science;
-        this.japanese = japanese;
-        this.geographyHistory = geographyHistory;
-      }
+  constructor(division, english, math, science, japanese, geography) {
+    this.division = division;
+    this.english = english;
+    this.math = math;
+    this.science = science;
+    this.japanese = japanese;
+    this.geography = geography;
+  }
 
-      totalScore() {
-        return this.english + this.math + this.science + this.japanese + this.geographyHistory;
-      }
+  totalScore() {
+    return this.english + this.math + this.science + this.japanese + this.geography;
+  }
 
-      scienceScore() {
-        return this.math + this.science;
-      }
+  isPassed() {
+    const totalScore = this.totalScore();
 
-      humanitiesScore() {
-        return this.japanese + this.geographyHistory;
-      }
+    const scienceSubjects = [this.math, this.science];
+    const humanitiesSubjects = [this.japanese, this.geography];
 
-    isPassed() {
-          const totalScore = this.totalScore();
-          const scienceScore = this.scienceScore();
-          const humanitiesScore = this.humanitiesScore();
+    const passedTotalScore = totalScore >= 350;
+    const passedScienceSubjects = this.division === 's' && scienceSubjects.filter(s => s >= 80).length >= 2;
+    const passedHumanitiesSubjects = this.division === 'l' && humanitiesSubjects.filter(h => h >= 80).length >= 2;
 
-      return (
-      totalScore >= 350 &&
-      ((this.division === 'l' && humanitiesScore >= 160) || (this.division === 's' && scienceScore >= 160))
-    );
+    return passedTotalScore && (passedScienceSubjects || passedHumanitiesSubjects);
   }
 }
 
