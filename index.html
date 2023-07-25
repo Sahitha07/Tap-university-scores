@@ -276,6 +276,23 @@ function updateSubjectToDeleteOptions() {
 }
 
 updateSubjectToDeleteOptions();
+
+  // Get the "Start Examination" button and add an event listener
+  const startButton = document.getElementById('startButton');
+  startButton.addEventListener('click', function () {
+    const numExaminees = parseInt(document.getElementById('numExaminees').value);
+
+    if (isNaN(numExaminees) || numExaminees <= 0) {
+      alert('Please enter a valid number of examinees (greater than 0).');
+      return;
+    }
+
+    addExamineeInputs(numExaminees);
+  });
+
+  // Get the "Process Data" button and add an event listener
+  const processDataButton = document.getElementById('processData');
+  processDataButton.addEventListener('click', processExamineeData);
   </script>
 </body>
 </html>
