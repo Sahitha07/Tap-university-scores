@@ -1,44 +1,35 @@
-// Import the Examinee and Examination classes from their respective files
+// Import the Examinee class from './examinee.js'
 import { Examinee } from './examinee.js';
-import { Examination } from './examination.js';
 
-// Function to start the exam and generate examinee data input fields dynamically
-function startExam() {
-  // Get the number of examinees from the input field
-  const numExaminees = parseInt(document.getElementById('numExaminees').value);
-  const examineeDataContainer = document.getElementById('examineeData');
-  examineeDataContainer.innerHTML = ''; // Clear previous content
-  let examineeDataHTML = '';
-
-  // Loop through the number of examinees and create input fields for each examinee
-  for (let i = 0; i < numExaminees; i++) {
-    examineeDataHTML += `
-      <div>
-        <label for="division-${i}">Division (s/l):</label>
-        <input type="text" id="division-${i}" maxlength="1" required>
-
-        <label for="english-${i}">English:</label>
-        <input type="number" id="english-${i}" required>
-
-        <label for="math-${i}">Math:</label>
-        <input type="number" id="math-${i}" required>
-
-        <label for="science-${i}">Science:</label>
-        <input type="number" id="science-${i}" required>
-
-        <label for="japanese-${i}">Japanese:</label>
-        <input type="number" id="japanese-${i}" required>
-
-        <label for="geography-${i}">Geography/History:</label>
-        <input type="number" id="geography-${i}" required>
-      </div>
-    `;
+// Examination class representing the collection of examinees
+export class Examination {
+  constructor() {
+    // Initialize an empty array to store examinee objects
+    this.examinees = [];
   }
 
-  // Populate the examinee data container with the generated input fields
-  examineeDataContainer.innerHTML = examineeDataHTML;
+  // Method to add an examinee to the examination
+  addExaminee(examinee) {
+    // Add the examinee object to the array of examinees
+    this.examinees.push(examinee);
+  }
+
+  // Method to count the number of examinees who have passed the exam
+  countPassers() {
+    // Initialize a variable to keep track of the number of passers
+    let passers = 0;
+    
+    // Loop through each examinee in the array of examinees
+    for (const examinee of this.examinees) {
+      // Check if the examinee has passed the exam using the isPassed() method of the Examinee class
+      if (examinee.isPassed()) {
+        // If the examinee has passed, increment the passers count
+        passers++;
+      }
+    }
+
+    // Return the total number of passers
+    return passers;
+  }
 }
 
-// Add event listener to the "Start Examination" button
-const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', startExam);
