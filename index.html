@@ -200,10 +200,10 @@ function isWithinRange(score) {
           return;
         }
 
-        const scienceScores = [parseInt(math), parseInt(science)];
-        const humanitiesScores = [parseInt(japanese), parseInt(geography)];
+    const examinee = new Examinee(division, ...totalScores);
+        examination.addExaminee(examinee);
 
-        if (isPassed(totalScores, scienceScores, humanitiesScores, division)) {
+        if (examinee.isPassed()) {
           passersCount++;
         }
       }
@@ -211,7 +211,7 @@ function isWithinRange(score) {
       const outputElement = document.getElementById('output');
       outputElement.textContent = 'Number of Passers: ' + passersCount;
     }
-    
+
 
     function addSubject() {
   const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
